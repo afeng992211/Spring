@@ -1724,191 +1724,59 @@ noRollbackFor = java.lang.RuntimeEexception 关闭回滚
 
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#### Spring整合MVC框架
+
+为什么要整合MVC
+
+```markdown
+# MVC框架提供了控制器（Controller）调用Service
+  dao-> service->controller
+# 请求响应的处理
+# 接受请求参数
+# 控制程序的运行流程
+# 试图解析
+```
+
+Spring整合MVC的核心思路
+
+1. 准备工厂
+
+```markdown
+# 1. Web开发过程中如何创建工厂
+	ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext.xml");
+							   WebXmlApplicationContext()
+# 2.如何保证工厂唯一且被共用
+	工厂存储在ServletContext这个作用域中，ServletContext.setAttritube("xxxx",ctx);
+	唯一：ServletContext对象创建的同时执行new ClassPathXmlApplicationContext("/applicationContext.xml");
+	ServletContextlistener在Servlet对象创建的同时，被调用（只会被调用一次），把创建Servlet工厂的代码，写在ServletContextListener中，也会只调用一次，最终工厂就保证了唯一性
+# 总结
+	在开发和创建工厂的过程中，既要创建工厂又要保证工厂的唯一和被大家所共用。
+	
+	spring中封装了ContextLoaderListener可以执行
+    	ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext.xml");
+    	ServletContext.setAttritube("xxxx",ctx);
+```
+
+使用方式
+
+```xml
+web.xml
+<listener>
+  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+ 
+配置文件位置
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>      
+```
+
+代码整合
+
+```
+ 依赖注入： 把Service对象注入整个控制器
+```
 
 ###### Bean
 
